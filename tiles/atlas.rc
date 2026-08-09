@@ -1,0 +1,10 @@
+// Embedded sprite-atlas resources. Same pattern as ui/assets/fonts.rc —
+// FindResource/LoadResource/LockResource in SpriteAtlas.h pulls these
+// at runtime, so the DLL no longer needs the tiles/ folder shipped
+// alongside it.
+//
+// Paths are relative to this .rc file's directory (tiles\).
+#include <windows.h>
+
+ATLAS_PNG  RCDATA "atlas.png"
+ATLAS_JSON RCDATA "atlas.json"

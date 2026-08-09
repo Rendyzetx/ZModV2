@@ -1,0 +1,340 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <ProjectGuid>{04B17470-CB82-4724-904B-25445926AB86}</ProjectGuid>
+    <RootNamespace>ImGuiDirectX11KieroHook</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>ZwSpark</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LibraryPath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LibraryPath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LibraryPath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x64;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LibraryPath>$(LibraryPath)</LibraryPath>
+    <IncludePath>$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>core;il2cpp;features;features\mining;features\bots;features\visual;anticheat;multibox;diagnostics;vendor;.;legacy;util;ui;ui\widgets;ui\chrome;ui\drawer;ui\palette;ui\toast;ui\rails;imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32_LEAN_AND_MEAN;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <AdditionalDependencies>d3d11.lib;dxgi.lib;windowscodecs.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalOptions>/FORCE:MULTIPLE /IGNORE:4006 %(AdditionalOptions)</AdditionalOptions>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>core;il2cpp;features;features\mining;features\bots;features\visual;anticheat;multibox;diagnostics;vendor;.;legacy;util;ui;ui\widgets;ui\chrome;ui\drawer;ui\palette;ui\toast;ui\rails;imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32_LEAN_AND_MEAN;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalOptions>/FORCE:MULTIPLE /IGNORE:4006 %(AdditionalOptions)</AdditionalOptions>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>core;il2cpp;features;features\mining;features\bots;features\visual;anticheat;multibox;diagnostics;vendor;.;legacy;util;ui;ui\widgets;ui\chrome;ui\drawer;ui\palette;ui\toast;ui\rails;imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32_LEAN_AND_MEAN;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>d3d11.lib;dxgi.lib;windowscodecs.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalOptions>/FORCE:MULTIPLE /IGNORE:4006 %(AdditionalOptions)</AdditionalOptions>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>core;il2cpp;features;features\mining;features\bots;features\visual;anticheat;multibox;diagnostics;vendor;.;legacy;util;ui;ui\widgets;ui\chrome;ui\drawer;ui\palette;ui\toast;ui\rails;imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32_LEAN_AND_MEAN;_CRT_SECURE_NO_WARNINGS;USE_DLLAUTH;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateMapFile>true</GenerateMapFile>
+      <AdditionalDependencies>d3d11.lib;dxgi.lib;windowscodecs.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <!-- /SECTION:.text,RE forces .text to Read+Execute only (no Write).
+           Defensive complement to tools/compute_text_crc.ps1: discourages
+           the linker from emitting writable relocations into .text that
+           the loader would patch at load-time (which would diverge on-disk
+           CRC from in-memory CRC). NOT a guarantee on x64 — RIP-relative
+           static initializers can still trigger loader fixups. The mapped-
+           image CRC script remains the always-correct path. -->
+      <AdditionalOptions>/FORCE:MULTIPLE /IGNORE:4006 /SECTION:.text,RE %(AdditionalOptions)</AdditionalOptions>
+    </Link>
+    <PostBuildEvent>
+      <!-- v2: manifest is NO LONGER copied next to ZwSpark.dll. The DLL
+           fetches the sealed manifest from the worker `/manifest` endpoint
+           which serves it out of Cloudflare KV (key: manifest:<game_sha>).
+           CI publishes the sealed bytes to KV via
+           `pwsh tools/upload_manifest_to_kv.ps1` — see
+           tools/prompts/manifest_release_workflow.md.
+           Customer machines must never see cheat_manifest.{json,sealed}. -->
+      <Command>if not exist "$(OutDir)ui\assets" mkdir "$(OutDir)ui\assets"
+xcopy /Y /Q "$(ProjectDir)ui\assets\*.ttf" "$(OutDir)ui\assets\"</Command>
+      <Message>Bundling ui/assets/*.ttf next to ZwSpark.dll (manifest now served via worker /manifest)</Message>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="imgui\imgui.cpp" />
+    <ClCompile Include="imgui\imgui_demo.cpp" />
+    <ClCompile Include="imgui\imgui_draw.cpp" />
+    <ClCompile Include="imgui\imgui_impl_dx11.cpp" />
+    <ClCompile Include="imgui\imgui_impl_win32.cpp" />
+    <ClCompile Include="imgui\imgui_tables.cpp" />
+    <ClCompile Include="imgui\imgui_widgets.cpp" />
+    <ClCompile Include="IL2CPP_Resolver\kiero\kiero.cpp" />
+    <ClCompile Include="IL2CPP_Resolver\kiero\minhook\src\buffer.c" />
+    <ClCompile Include="IL2CPP_Resolver\kiero\minhook\src\hde\hde32.c" />
+    <ClCompile Include="IL2CPP_Resolver\kiero\minhook\src\hde\hde64.c" />
+    <ClCompile Include="IL2CPP_Resolver\kiero\minhook\src\hook.c" />
+    <ClCompile Include="IL2CPP_Resolver\kiero\minhook\src\trampoline.c" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="ui\ZmodUI.cpp" />
+    <ClCompile Include="ui\Theme.cpp" />
+    <ClCompile Include="ui\Tokens.cpp" />
+    <ClCompile Include="ui\Blur.cpp" />
+    <ClCompile Include="ui\Tween.cpp" />
+    <ClCompile Include="ui\Fonts.cpp" />
+    <ClCompile Include="ui\chrome\BootOverlay.cpp" />
+    <ClCompile Include="ui\chrome\ResizeGrip.cpp" />
+    <ClCompile Include="ui\chrome\Sidebar.cpp" />
+    <ClCompile Include="ui\chrome\StatusStrip.cpp" />
+    <ClCompile Include="ui\chrome\TitleBar.cpp" />
+    <ClCompile Include="ui\drawer\Bodies.cpp" />
+    <ClCompile Include="ui\drawer\Drawer.cpp" />
+    <ClCompile Include="ui\palette\Palette.cpp" />
+    <ClCompile Include="ui\rails\AutoFish.cpp" />
+    <ClCompile Include="ui\rails\AutoFossil.cpp" />
+    <ClCompile Include="ui\rails\AutoMine.cpp" />
+    <ClCompile Include="ui\rails\AutoNether.cpp" />
+    <ClCompile Include="ui\rails\Pnb.cpp" />
+    <ClCompile Include="ui\rails\Proxies.cpp" />
+    <ClCompile Include="ui\rails\Combat.cpp" />
+    <ClCompile Include="ui\rails\Dashboard.cpp" />
+    <ClCompile Include="ui\rails\Debug.cpp" />
+    <ClCompile Include="ui\rails\Misc.cpp" />
+    <ClCompile Include="ui\rails\Movement.cpp" />
+    <ClCompile Include="ui\rails\Network.cpp" />
+    <ClCompile Include="ui\rails\Settings.cpp" />
+    <ClCompile Include="ui\rails\Store.cpp" />
+    <ClCompile Include="ui\rails\Visuals.cpp" />
+    <ClCompile Include="ui\toast\Toast.cpp" />
+    <ClCompile Include="ui\widgets\Button.cpp" />
+    <ClCompile Include="ui\widgets\Chip.cpp" />
+    <ClCompile Include="ui\widgets\Combo.cpp" />
+    <ClCompile Include="ui\widgets\Esp.cpp" />
+    <ClCompile Include="ui\widgets\Gem.cpp" />
+    <ClCompile Include="ui\widgets\Input.cpp" />
+    <ClCompile Include="ui\widgets\Primitives.cpp" />
+    <ClCompile Include="ui\widgets\Row.cpp" />
+    <ClCompile Include="ui\widgets\Slider.cpp" />
+    <ClCompile Include="ui\widgets\ThemeUI.cpp" />
+    <ClCompile Include="ui\widgets\Toggle.cpp" />
+    <ClCompile Include="ui\ui_bindings.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="IL2CPP_Resolver\kiero\minhook\dll_resources\MinHook.def" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="IL2CPP_Resolver\kiero\minhook\dll_resources\MinHook.rc" />
+    <ResourceCompile Include="ui\assets\fonts.rc" />
+    <ResourceCompile Include="tiles\atlas.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="main.h" />
+    <ClInclude Include="includes.h" />
+    <ClInclude Include="core\functions.h" />
+    <ClInclude Include="core\Config.h" />
+    <ClInclude Include="core\Theme.h" />
+    <ClInclude Include="core\Styles.h" />
+    <ClInclude Include="core\PWMath.h" />
+    <ClInclude Include="il2cpp\Manifest.h" />
+    <ClInclude Include="il2cpp\MethodDump.h" />
+    <ClInclude Include="features\mining\AutoMine.h" />
+    <ClInclude Include="features\mining\MineScheduler.h" />
+    <ClInclude Include="features\mining\PathFinding.h" />
+    <ClInclude Include="features\bots\BankBot.h" />
+    <ClInclude Include="features\bots\GemSeller.h" />
+    <ClInclude Include="features\bots\AutoNether.h" />
+    <ClInclude Include="features\visual\esp.h" />
+    <ClInclude Include="features\visual\minimap.h" />
+    <ClInclude Include="anticheat\ACTkBypass.h" />
+    <ClInclude Include="anticheat\Stealth.h" />
+    <ClInclude Include="anticheat\SIGMAHOOK.h" />
+    <ClInclude Include="multibox\MultiboxMode.h" />
+    <ClInclude Include="multibox\MultiboxProfile.h" />
+    <ClInclude Include="multibox\AccountCrypto.h" />
+    <ClInclude Include="multibox\DllAuth.h" />
+    <ClInclude Include="diagnostics\Diagnostics.h" />
+    <ClInclude Include="diagnostics\KickLogger.h" />
+    <ClInclude Include="diagnostics\LogStream.h" />
+    <ClInclude Include="util\XorStr.h" />
+    <ClInclude Include="legacy\Account.h" />
+    <ClInclude Include="vendor\json.hpp" />
+    <ClInclude Include="vendor\WinReg.hpp" />
+    <ClInclude Include="ui\ZmodUI.h" />
+    <ClInclude Include="ui\Theme.h" />
+    <ClInclude Include="ui\Tokens.h" />
+    <ClInclude Include="ui\Tween.h" />
+    <ClInclude Include="ui\Fonts.h" />
+    <ClInclude Include="ui\Icons.h" />
+    <ClInclude Include="ui\Internal.h" />
+    <ClInclude Include="ui\drawer\Drawer.h" />
+    <ClInclude Include="ui\widgets\Primitives.h" />
+    <ClInclude Include="ui\widgets\Row.h" />
+    <ClInclude Include="ui\ui_bindings.h" />
+    <ClInclude Include="imgui\imconfig.h" />
+    <ClInclude Include="imgui\imgui.h" />
+    <ClInclude Include="imgui\imgui_impl_dx11.h" />
+    <ClInclude Include="imgui\imgui_impl_win32.h" />
+    <ClInclude Include="imgui\imgui_internal.h" />
+    <ClInclude Include="imgui\imstb_rectpack.h" />
+    <ClInclude Include="imgui\imstb_textedit.h" />
+    <ClInclude Include="imgui\imstb_truetype.h" />
+    <ClInclude Include="IL2CPP_Resolver\API\Callback.hpp" />
+    <ClInclude Include="IL2CPP_Resolver\API\Class.hpp" />
+    <ClInclude Include="IL2CPP_Resolver\API\Domain.hpp" />
+    <ClInclude Include="IL2CPP_Resolver\API\ResolveCall.hpp" />
+    <ClInclude Include="IL2CPP_Resolver\API\String.hpp" />
+    <ClInclude Include="IL2CPP_Resolver\API\Thread.hpp" />
+    <ClInclude Include="IL2CPP_Resolver\Data.hpp" />
+    <ClInclude Include="IL2CPP_Resolver\Defines.hpp" />
+    <ClInclude Include="IL2CPP_Resolver\IL2CPP_Resolver.hpp" />
+    <ClInclude Include="IL2CPP_Resolver\SystemTypeCache.hpp" />
+    <ClInclude Include="IL2CPP_Resolver\Unity\API\Camera.hpp" />
+    <ClInclude Include="IL2CPP_Resolver\Unity\API\Component.hpp" />
+    <ClInclude Include="IL2CPP_Resolver\Unity\API\GameObject.hpp" />
+    <ClInclude Include="IL2CPP_Resolver\Unity\API\LayerMask.hpp" />
+    <ClInclude Include="IL2CPP_Resolver\Unity\API\Object.hpp" />
+    <ClInclude Include="IL2CPP_Resolver\Unity\API\Rigidbody.hpp" />
+    <ClInclude Include="IL2CPP_Resolver\Unity\API\Transform.hpp" />
+    <ClInclude Include="IL2CPP_Resolver\Unity\Defines.hpp" />
+    <ClInclude Include="IL2CPP_Resolver\Unity\Obfuscators.hpp" />
+    <ClInclude Include="IL2CPP_Resolver\Unity\Structures\Engine.hpp" />
+    <ClInclude Include="IL2CPP_Resolver\Unity\Structures\il2cpp.hpp" />
+    <ClInclude Include="IL2CPP_Resolver\Unity\Structures\il2cppArray.hpp" />
+    <ClInclude Include="IL2CPP_Resolver\Unity\Structures\il2cppDictionary.hpp" />
+    <ClInclude Include="IL2CPP_Resolver\Unity\Structures\System_String.hpp" />
+    <ClInclude Include="IL2CPP_Resolver\Utils\Hash.hpp" />
+    <ClInclude Include="IL2CPP_Resolver\Utils\Helper.hpp" />
+    <ClInclude Include="IL2CPP_Resolver\Utils\VTable.hpp" />
+    <ClInclude Include="IL2CPP_Resolver\kiero\kiero.h" />
+    <ClInclude Include="IL2CPP_Resolver\kiero\minhook\include\MinHook.h" />
+    <ClInclude Include="IL2CPP_Resolver\kiero\minhook\src\buffer.h" />
+    <ClInclude Include="IL2CPP_Resolver\kiero\minhook\src\hde\hde32.h" />
+    <ClInclude Include="IL2CPP_Resolver\kiero\minhook\src\hde\hde64.h" />
+    <ClInclude Include="IL2CPP_Resolver\kiero\minhook\src\hde\pstdint.h" />
+    <ClInclude Include="IL2CPP_Resolver\kiero\minhook\src\hde\table32.h" />
+    <ClInclude Include="IL2CPP_Resolver\kiero\minhook\src\hde\table64.h" />
+    <ClInclude Include="IL2CPP_Resolver\kiero\minhook\src\trampoline.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

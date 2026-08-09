@@ -1,0 +1,54 @@
+# Build outputs
+x64/
+Debug/
+Release/
+*.dll
+*.lib
+*.exp
+*.pdb
+*.ilk
+*.obj
+*.tlog/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.aps
+*.ncb
+*.sdf
+*.opensdf
+ipch/
+
+# Dumper tooling / generated
+update_offsets/tools/
+update_offsets/dump_output/
+*.bak
+
+# Manifest sealing key — must match ManifestSeal.h, never commit
+tools/manifest_seal_key.hex
+
+# Manifest key-publication ECDSA private key — never commit
+tools/manifest_publish_privkey.bin
+tools/manifest_key.signed.json
+
+
+amplify-upload/
+amplify-upload.zip
+design-mockups/
+
+# Secrets (DLL_AUTH_SECRET hex, MANIFEST_SECRET, etc) — never commit
+secrets/
+
+# Sealed manifest is now CI-uploaded to KV, never disk-shipped to customers.
+# Local dev builds may still produce one via seal_manifest.py (legacy mode);
+# ignore to keep the repo clean.
+*.sealed
+
+# wrangler local emulator state (created when running wrangler dev / put
+# without --remote). Never commit.
+.wrangler/
+
+# Python tooling bytecode cache (tools/*.py)
+__pycache__/
+*.pyc

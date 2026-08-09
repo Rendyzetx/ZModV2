@@ -1,0 +1,10 @@
+// Embedded font resources. Loaded at runtime via FindResource/LoadResource.
+// Paths relative to this .rc file's directory: ui\assets\.
+#include <windows.h>
+
+INTER_REGULAR    RCDATA "Inter-Regular.ttf"
+INTER_MEDIUM     RCDATA "Inter-Medium.ttf"
+INTER_SEMIBOLD   RCDATA "Inter-SemiBold.ttf"
+INTER_BOLD       RCDATA "Inter-Bold.ttf"
+JETBRAINS_MONO   RCDATA "JetBrainsMono-Regular.ttf"
+LUCIDE_ICONS     RCDATA "lucide.ttf"
