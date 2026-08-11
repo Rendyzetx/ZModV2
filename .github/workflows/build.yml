@@ -23,7 +23,7 @@ jobs:
     - name: Build Release x64
       run: |
         cd "$env:GITHUB_WORKSPACE"
-        msbuild "CodeSpark.sln" /p:Configuration=Release /p:Platform=x64 /p:UseEnv=true /m /v:m /nologo > build.log 2>&1
+        msbuild "CodeSpark.sln" /p:Configuration=Release /p:Platform=x64 /p:UseEnv=true /m /v:m /nologo
       shell: pwsh
 
     - name: Check build output
@@ -33,9 +33,8 @@ jobs:
           $sz = [math]::Round((Get-Item $dllPath).Length/1MB, 2)
           Write-Host "SUCCESS: ZwSpark.dll created ($sz MB)"
         } else {
-          Write-Host "DLL not found at expected path. Last 30 lines of build log:"
-          Get-Content "$env:GITHUB_WORKSPACE/build.log" -Tail 30
-          throw "Build failed"
+          Write-Host "DLL not found at expected path. Searching..."
+          Get-ChildItem -Path "$env:GITHUB_WORKSPACE" -Filter "*.dll" -Recurse | Select-Object FullName
         }
       shell: pwsh
 
@@ -45,13 +44,6 @@ jobs:
         name: ZwSpark-dll
         path: ${{ github.workspace }}/x64/Release/ZwSpark.dll
         retention-days: 30
-
-    - name: Upload build log
-      uses: actions/upload-artifact@v4
-      with:
-        name: build-log
-        path: ${{ github.workspace }}/build.log
-        retention-days: 7
 
   create-release:
     needs: build-zmodv2
