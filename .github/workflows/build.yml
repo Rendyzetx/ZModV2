@@ -1,0 +1,100 @@
+name: Build ZModV2 DLL
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build-zmodv2:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Setup MSVC
+      uses: microsoft/setup-msbuild@v2
+
+    - name: Build Release x64
+      run: |
+        cd "$env:GITHUB_WORKSPACE"
+        msbuild "CodeSpark.sln" /p:Configuration=Release /p:Platform=x64 /p:UseEnv=true /m /v:m /nologo > build.log 2>&1
+      shell: pwsh
+
+    - name: Check build output
+      run: |
+        $dllPath = "$env:GITHUB_WORKSPACE/x64/Release/ZwSpark.dll"
+        if (Test-Path $dllPath) {
+          $sz = [math]::Round((Get-Item $dllPath).Length/1MB, 2)
+          Write-Host "SUCCESS: ZwSpark.dll created ($sz MB)"
+        } else {
+          Write-Host "DLL not found at expected path. Last 30 lines of build log:"
+          Get-Content "$env:GITHUB_WORKSPACE/build.log" -Tail 30
+          throw "Build failed"
+        }
+      shell: pwsh
+
+    - name: Upload DLL artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: ZwSpark-dll
+        path: ${{ github.workspace }}/x64/Release/ZwSpark.dll
+        retention-days: 30
+
+    - name: Upload build log
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-log
+        path: ${{ github.workspace }}/build.log
+        retention-days: 7
+
+  create-release:
+    needs: build-zmodv2
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Download DLL artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: ZwSpark-dll
+        path: release-assets/
+
+    - name: Generate version tag
+      id: version
+      run: |
+        TAG="v$(date +%Y%m%d)-$(git rev-parse --short HEAD)"
+        echo "tag=$TAG" >> $GITHUB_OUTPUT
+        echo "Tag: $TAG"
+
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: ${{ steps.version.outputs.tag }}
+        name: ${{ steps.version.outputs.tag }}
+        body: |
+          ## ZModV2 Build
+          - Commit: ${{ github.sha }}
+          - Branch: ${{ github.ref_name }}
+
+          ### Changes
+          - Auth bypassed (local manifest only)
+          - Dark modern theme
+          - Auto-update enabled
+
+          ### Installation
+          - Unzip the package
+          - Place next to PixelWorlds.exe
+          - Inject ZwSpark.dll
+          - Game auto-updates manifest on launch
+        files: release-assets/ZwSpark.dll
+        draft: false
+        prerelease: false
