@@ -15,11 +15,12 @@
 #include <string_view>
 #include <unordered_map>
 #include <vector>
+#include <filesystem>
+#include <shlobj.h>
 #pragma comment(lib, "Bcrypt.lib")
 
 #include "json.hpp"
 #include "IL2CPP_Resolver/Data.hpp"
-#include "ManifestFetch.h"
 #include "BootState.h"
 
 namespace Manifest {
@@ -162,11 +163,55 @@ inline bool Init(HMODULE ) {
     State& s = Get();
     if (s.loaded) return true;
 
-    std::string jsonText, fetchErr;
-    if (!ManifestFetch::Fetch(jsonText, fetchErr)) {
-        std::cout << "[Manifest] Fetch failed: " << fetchErr << std::endl;
-        BootState::Fail(fetchErr);
+    // ── Load manifest from local file (no server auth required) ──
+    std::string jsonText;
+
+    // Try multiple locations: exe dir, AppData/ZMod, current dir
+    std::vector<std::filesystem::path> searchPaths;
+
+    // 1. Next to the injected DLL / game exe
+    {
+        char exePath[MAX_PATH] = {};
+        if (GetModuleFileNameA(nullptr, exePath, MAX_PATH)) {
+            auto p = std::filesystem::path(exePath).parent_path() / "cheat_manifest.json";
+            searchPaths.push_back(p);
+        }
+    }
+    // 2. AppData/ZMod/cheat_manifest.json
+    {
+        char appData[MAX_PATH] = {};
+        if (SUCCEEDED(SHGetFolderPathA(nullptr, CSIDL_APPDATA, nullptr, 0, appData))) {
+            auto p = std::filesystem::path(appData) / "ZMod" / "cheat_manifest.json";
+            searchPaths.push_back(p);
+        }
+    }
+    // 3. Current working directory
+    searchPaths.push_back(std::filesystem::path("cheat_manifest.json"));
+
+    std::filesystem::path foundPath;
+    for (const auto& p : searchPaths) {
+        if (std::filesystem::exists(p)) {
+            foundPath = p;
+            break;
+        }
+    }
+
+    if (foundPath.empty()) {
+        std::cout << "[Manifest] cheat_manifest.json not found in any search path." << std::endl;
+        BootState::Fail("manifest: file not found (cheat_manifest.json)");
         return false;
+    }
+
+    std::cout << "[Manifest] Loading from: " << foundPath.string() << std::endl;
+    {
+        std::ifstream f(foundPath, std::ios::binary);
+        if (!f) {
+            BootState::Fail("manifest: cannot open file");
+            return false;
+        }
+        std::ostringstream ss;
+        ss << f.rdbuf();
+        jsonText = ss.str();
     }
 
     nlohmann::json j;
@@ -175,11 +220,9 @@ inline bool Init(HMODULE ) {
     } catch (const std::exception& e) {
         std::cout << "[Manifest] Parse error: " << e.what() << std::endl;
         BootState::Fail(std::string("manifest: parse: ") + e.what());
-        SecureZeroMemory(jsonText.data(), jsonText.size());
         return false;
     }
-    SecureZeroMemory(jsonText.data(), jsonText.size());
-    std::cout << "[Manifest] Loaded manifest from worker." << std::endl;
+    std::cout << "[Manifest] Loaded manifest from disk." << std::endl;
 
     int schema = j.value("schema_version", 0);
     if (schema != 1) {

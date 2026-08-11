@@ -12,7 +12,7 @@ struct Palette {
     ImVec4 c[CustomTokenCount];
 };
 
-Preset  g_preset       = LiquidGlass;
+Preset  g_preset       = Dark;
 bool    g_initial_set  = false;
 float   g_fade_t       = 1.f;
 Palette g_custom;
@@ -36,20 +36,20 @@ static bool   isDarkColor(ImVec4 c) { return (c.x + c.y + c.z) / 3.f < 0.5f; }
 
 Palette PaletteDark() {
     Palette p;
-    p.c[Bg]           = v(28,28,30);
-    p.c[BgSidebar]    = v(37,37,39);
-    p.c[BgCard]       = v(44,44,46);
-    p.c[BgHover]      = v(52,52,58);
-    p.c[BgActive]     = v(58,58,64);
-    p.c[BgPressed]    = v(68,68,74);
-    p.c[BgPanelInner] = v(38,38,41);
-    p.c[Line]         = v(58,58,60);
-    p.c[LineSoft]     = v(47,47,49);
-    p.c[Text]         = v(245,245,247);
-    p.c[TextSec]      = v(152,152,158);
-    p.c[TextTert]     = v(108,108,112);
-    p.c[AccentTok]    = v(64,156,255);
-    p.c[AccentSoft]   = v(28,52,88);
+    p.c[Bg]           = v(10,10,14);     // #0A0A0E near-black
+    p.c[BgSidebar]    = v(14,14,20);     // #0E0E14
+    p.c[BgCard]       = v(20,20,28);     // #14141C
+    p.c[BgHover]      = v(28,28,38);     // #1C1C26
+    p.c[BgActive]     = v(36,36,48);     // #242430
+    p.c[BgPressed]    = v(44,44,58);     // #2C2C3A
+    p.c[BgPanelInner] = v(16,16,22);     // #101016
+    p.c[Line]         = v(42,42,52);     // #2A2A34
+    p.c[LineSoft]     = v(28,28,36);     // #1C1C24
+    p.c[Text]         = v(226,227,232);  // #E2E3E8
+    p.c[TextSec]      = v(132,135,148);  // #848794
+    p.c[TextTert]     = v(90,92,104);    // #5A5C68
+    p.c[AccentTok]    = v(99,102,241);   // #6366F1 indigo
+    p.c[AccentSoft]   = v(40,42,80);     // dark indigo
     p.c[Green]        = v(48,209,88);
     p.c[Red]          = v(255,69,58);
     p.c[Orange]       = v(255,159,10);
@@ -83,24 +83,24 @@ Palette PaletteLight() {
 Palette PaletteLiquidGlass() {
     Palette p;
 
-    p.c[Bg]           = ImVec4(10  / 255.f, 12  / 255.f, 16  / 255.f, 0.28f);
-    p.c[BgSidebar]    = ImVec4(18  / 255.f, 20  / 255.f, 26  / 255.f, 0.38f);
-    p.c[BgPanelInner] = ImVec4(14  / 255.f, 16  / 255.f, 22  / 255.f, 0.30f);
+    p.c[Bg]           = ImVec4(10  / 255.f, 12  / 255.f, 16  / 255.f, 0.72f);
+    p.c[BgSidebar]    = ImVec4(14  / 255.f, 16  / 255.f, 22  / 255.f, 0.85f);
+    p.c[BgPanelInner] = ImVec4(12  / 255.f, 14  / 255.f, 20  / 255.f, 0.78f);
 
-    p.c[BgCard]       = ImVec4(26  / 255.f, 28  / 255.f, 34  / 255.f, 0.55f);
-    p.c[BgHover]      = ImVec4(48  / 255.f, 52  / 255.f, 62  / 255.f, 0.55f);
-    p.c[BgActive]     = ImVec4(64  / 255.f, 68  / 255.f, 80  / 255.f, 0.60f);
-    p.c[BgPressed]    = ImVec4(80  / 255.f, 84  / 255.f, 96  / 255.f, 0.65f);
+    p.c[BgCard]       = ImVec4(20  / 255.f, 22  / 255.f, 28  / 255.f, 0.88f);
+    p.c[BgHover]      = ImVec4(32  / 255.f, 34  / 255.f, 42  / 255.f, 0.90f);
+    p.c[BgActive]     = ImVec4(42  / 255.f, 44  / 255.f, 54  / 255.f, 0.92f);
+    p.c[BgPressed]    = ImVec4(54  / 255.f, 56  / 255.f, 68  / 255.f, 0.95f);
 
-    p.c[Line]         = ImVec4(255 / 255.f, 255 / 255.f, 255 / 255.f, 0.16f);
-    p.c[LineSoft]     = ImVec4(255 / 255.f, 255 / 255.f, 255 / 255.f, 0.08f);
+    p.c[Line]         = ImVec4(255 / 255.f, 255 / 255.f, 255 / 255.f, 0.10f);
+    p.c[LineSoft]     = ImVec4(255 / 255.f, 255 / 255.f, 255 / 255.f, 0.05f);
 
-    p.c[Text]         = v(245, 247, 252);
-    p.c[TextSec]      = v(192, 198, 215);
-    p.c[TextTert]     = v(140, 148, 168);
+    p.c[Text]         = v(226, 227, 232);
+    p.c[TextSec]      = v(132, 135, 148);
+    p.c[TextTert]     = v(90, 92, 104);
 
-    p.c[AccentTok]    = v(64, 156, 255);
-    p.c[AccentSoft]   = ImVec4(64 / 255.f, 156 / 255.f, 255 / 255.f, 0.22f);
+    p.c[AccentTok]    = v(99, 102, 241);
+    p.c[AccentSoft]   = ImVec4(99 / 255.f, 102 / 255.f, 241 / 255.f, 0.18f);
     p.c[Green]        = v(48, 209, 88);
     p.c[Red]          = v(255, 69, 58);
     p.c[Orange]       = v(255, 159, 10);

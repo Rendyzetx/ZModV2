@@ -37,11 +37,9 @@
 #include "Config.h"
 
 #include "XorStr.h"
-#include "DllAuth.h"
 #include "ACTkBypass.h"
 #include "Sentry.h"
 #include "Stealth.h"
-#include "DllAuthClient.h"
 #include "KickLogger.h"
 #include "CrashLogger.h"
 #ifdef ZMOD_V3
@@ -51,16 +49,12 @@
 #include "BootState.h"
 #include "Manifest.h"
 #include "ui_bindings.h"
-#include "AuthBanner.h"
 #include "Blur.h"
 
 inline void OpenURL(const char* url)
 {
     ShellExecuteA(NULL, "open", url, NULL, NULL, SW_SHOWNORMAL);
 }
-
-static char key_input[64] = "";
-static std::string login_message = "";
 
 bool show_imgui_menu = true;
 
@@ -2012,7 +2006,12 @@ static void RenderFrame() {
     {
         auto stage = BootState::g_stage.load(std::memory_order_acquire);
         if (stage == BootState::Stage::Failed) {
-            AuthBanner::Render();
+            // Boot failed — show simple error text instead of AuthBanner
+            ImGui::SetNextWindowSize(ImVec2(400, 120));
+            ImGui::Begin("Boot Error", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
+            ImGui::TextColored(ImVec4(1.0f, 0.3f, 0.3f, 1.0f), "Failed to load manifest.");
+            ImGui::TextWrapped("Check that cheat_manifest.json is next to the game exe.");
+            ImGui::End();
         } else if (stage == BootState::Stage::FeaturesReady) {
             __try {
                 PathRenderer::Render();
@@ -2145,7 +2144,12 @@ static void RenderFrame_DX11() {
     {
         auto stage = BootState::g_stage.load(std::memory_order_acquire);
         if (stage == BootState::Stage::Failed) {
-            AuthBanner::Render();
+            // Boot failed — show simple error text instead of AuthBanner
+            ImGui::SetNextWindowSize(ImVec2(400, 120));
+            ImGui::Begin("Boot Error", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
+            ImGui::TextColored(ImVec4(1.0f, 0.3f, 0.3f, 1.0f), "Failed to load manifest.");
+            ImGui::TextWrapped("Check that cheat_manifest.json is next to the game exe.");
+            ImGui::End();
         } else if (stage == BootState::Stage::FeaturesReady) {
             __try {
                 PathRenderer::Render();
@@ -2388,52 +2392,25 @@ DWORD WINAPI MainThread(LPVOID hInst) {
     }
     BootState::Set(BootState::Stage::Init, 15);
 
-    BootState::Set(BootState::Stage::AuthPending, 25);
+    // ── Auth bypassed: load manifest directly from disk ──
+    BootState::Set(BootState::Stage::ManifestPending, 25);
     bool bootHardFailed = false;
-    {
-        auto r = DllAuthClient::Authenticate();
-        if (r == DllAuthClient::Result::Permanent) {
-            std::cout << XS("[DllAuth] FATAL: ") << DllAuthClient::g_lastErrorMsg
-                      << XS(" — features disabled; banner will show.") << std::endl;
-            BootState::Fail(DllAuthClient::g_lastErrorMsg.empty()
-                ? std::string("Authentication failed")
-                : DllAuthClient::g_lastErrorMsg);
-            bootHardFailed = true;
-        } else if (r == DllAuthClient::Result::Transient) {
-
-            std::cout << XS("[DllAuth] WARN (transient): ") << DllAuthClient::g_lastErrorMsg
-                      << std::endl;
-            DllAuthClient::g_authFatal.store(true, std::memory_order_release);
-            BootState::Fail(DllAuthClient::g_lastErrorMsg.empty()
-                ? std::string("Auth transient failure — retry the loader.")
-                : DllAuthClient::g_lastErrorMsg);
-            bootHardFailed = true;
-        }
-
+    bool il2ok = false;
+    try {
+        std::cout << "[Main] Loading manifest from disk..." << std::endl;
+        il2ok = Manifest::Init((HMODULE)hInst);
+        std::cout << "[Main] Manifest loaded = " << (il2ok ? "true" : "false") << std::endl;
+    } catch (...) {
+        std::cout << "[Main] EXCEPTION inside Manifest::Init" << std::endl;
+        BootState::Fail("manifest: exception during init");
     }
-    if (!bootHardFailed) {
-        BootState::Set(BootState::Stage::AuthOk, 45);
+    if (!il2ok) {
+        bootHardFailed = true;
+    } else {
+        BootState::Set(BootState::Stage::ManifestOk, 80);
 
-        BootState::Set(BootState::Stage::ManifestPending, 55);
-        bool il2ok = false;
-        try {
-            std::cout << "[Main] Fetching manifest from worker..." << std::endl;
-            il2ok = Manifest::Init((HMODULE)hInst);
-            std::cout << "[Main] Manifest loaded = " << (il2ok ? "true" : "false") << std::endl;
-        } catch (...) {
-            std::cout << "[Main] EXCEPTION inside Manifest::Init" << std::endl;
-            BootState::Fail("manifest: exception during init");
-        }
-        if (!il2ok) {
-
-            DllAuthClient::g_authFatal.store(true, std::memory_order_release);
-            bootHardFailed = true;
-        } else {
-            BootState::Set(BootState::Stage::ManifestOk, 80);
-
-            if (gameAsm) {
-                ACTkBypass::Install();
-            }
+        if (gameAsm) {
+            ACTkBypass::Install();
         }
     }
 
