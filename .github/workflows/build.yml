@@ -20,10 +20,21 @@ jobs:
     - name: Setup MSVC
       uses: microsoft/setup-msbuild@v2
 
+    - name: List available Windows SDKs
+      run: |
+        Write-Host "=== Installed Windows SDKs ==="
+        $sdkPath = "C:\Program Files (x86)\Windows Kits\10\Include"
+        if (Test-Path $sdkPath) {
+          Get-ChildItem $sdkPath -Directory | Select-Object Name
+        }
+      shell: pwsh
+
     - name: Build Release x64
       run: |
         cd "$env:GITHUB_WORKSPACE"
-        msbuild "CodeSpark.sln" /p:Configuration=Release /p:Platform=x64 /p:UseEnv=true /m /v:m /nologo
+        $sdkVer = (Get-ChildItem "C:\Program Files (x86)\Windows Kits\10\Include" -Directory | Select-Object -First 1 -ExpandProperty Name)
+        Write-Host "Using SDK: $sdkVer"
+        msbuild "CodeSpark.sln" /p:Configuration=Release /p:Platform=x64 /p:UseEnv=true /p:WindowsTargetPlatformVersion=$sdkVer /m /v:m /nologo
       shell: pwsh
 
     - name: Check build output
@@ -33,7 +44,7 @@ jobs:
           $sz = [math]::Round((Get-Item $dllPath).Length/1MB, 2)
           Write-Host "SUCCESS: ZwSpark.dll created ($sz MB)"
         } else {
-          Write-Host "DLL not found at expected path. Searching..."
+          Write-Host "DLL not found. Searching..."
           Get-ChildItem -Path "$env:GITHUB_WORKSPACE" -Filter "*.dll" -Recurse | Select-Object FullName
         }
       shell: pwsh
